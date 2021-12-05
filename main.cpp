@@ -11,7 +11,9 @@ public:
 
 private:
 	olc::vf2d fPlayerPos = { 16.0f, 80.0f };
-	float fPlayerSpeed = 0.1f;
+	olc::vf2d fPlayerSpeed = { 30.0f, 0.0f };
+
+	float fGravityAcceleration = 60.0f;
 
 	olc::vi2d vBlockSize = { 16, 16 };
 	std::unique_ptr<int[]> blocks;
@@ -42,13 +44,27 @@ public:
 	bool OnUserUpdate(float fElapsedTime) override
 	{
 		// Handle User Input 
-		if (GetKey(olc::Key::LEFT).bHeld) fPlayerPos.x -= fPlayerSpeed;
-		if (GetKey(olc::Key::RIGHT).bHeld) fPlayerPos.x += fPlayerSpeed;
+		if (GetKey(olc::Key::LEFT).bHeld) fPlayerPos.x -= fPlayerSpeed.x * fElapsedTime;
+		if (GetKey(olc::Key::RIGHT).bHeld) fPlayerPos.x += fPlayerSpeed.x * fElapsedTime;
+		if (GetKey(olc::Key::SPACE).bPressed)
+			if (fPlayerSpeed.y == 0.0f)
+				fPlayerSpeed.y = 60.0f;
 		
+		// Gravity emulation
+		fPlayerPos.y = fPlayerPos.y - fPlayerSpeed.y * fElapsedTime + fGravityAcceleration * fElapsedTime * fElapsedTime / 2.0f;
+		if (fPlayerSpeed.y != 0.0f) fPlayerSpeed.y -= fGravityAcceleration * fElapsedTime; 
+		
+		// Collisions check
 		if (fPlayerPos.x < 16.0f) fPlayerPos.x = 16.0f;
-		if (fPlayerPos.x + 16.0f > 208.0f) fPlayerPos.x = 192.0f; 
-		
+		if (fPlayerPos.x + 16.0f > 208.0f) fPlayerPos.x = 192.0f;
+		if (fPlayerPos.y < 16.0f) fPlayerPos.y = 16.0f;
+		if (fPlayerPos.y + 16.0f > 96.0f) 
+		{
+			fPlayerPos.y = 80.0f;
+			fPlayerSpeed.y = 0.0f;
+		}
 		// Draw Game Field
+		Clear(olc::BLACK);
 		for (int y = 0; y < 7; y++)
 		{
 			for (int x = 0; x < 14; x++)
