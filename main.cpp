@@ -11,15 +11,14 @@ public:
 
 private:
 	olc::vf2d fPlayerPos = { 16.0f, 80.0f };
-	olc::vf2d fPlayerSpeed = { 30.0f, 0.0f };
+	olc::vf2d fPlayerSpeed = { 25.0f, 0.0f };
 
 	float fGravityAcceleration = 60.0f;
 
 	olc::vi2d vBlockSize = { 16, 16 };
 	std::unique_ptr<int[]> blocks;
 	
-	std::unique_ptr<olc::Sprite> sprTile;
-	std::unique_ptr<olc::Sprite> sprPlayer;
+	std::unique_ptr<olc::Sprite> sprTileMap;
 public:
 	bool OnUserCreate() override
 	{
@@ -29,15 +28,14 @@ public:
 			for (int x = 0; x < 14; x++)
 			{
 				if (x == 0 || y == 0 || x == 13 || y == 6)
-					blocks[y * 14 + x] = 10;
+					blocks[y * 14 + x] = 11;
 				else
 					blocks[y * 14 + x] = 0;
 			}
 		}
 		
 		// Load the sprites
-		sprTile = std::make_unique<olc::Sprite>("./textures/tile_0011.png");
-		sprPlayer = std::make_unique<olc::Sprite>("./textures/tile_0240.png");
+		sprTileMap = std::make_unique<olc::Sprite>("./textures/monochrome_tilemap_packed.png");
 		return true;
 	}
 	
@@ -63,24 +61,19 @@ public:
 			fPlayerPos.y = 80.0f;
 			fPlayerSpeed.y = 0.0f;
 		}
+		
 		// Draw Game Field
 		Clear(olc::BLACK);
 		for (int y = 0; y < 7; y++)
 		{
 			for (int x = 0; x < 14; x++)
 			{
-				switch (blocks[y * 14 + x])
-				{
-				case 0: // Do nothing
-					break;
-				case 10: // Draw Boundary
-					DrawSprite(olc::vi2d(x, y) * vBlockSize, sprTile.get());
-					break;
-				}
+				DrawPartialSprite(olc::vi2d(x, y) * vBlockSize, sprTileMap.get(), olc::vi2d(blocks[y * 14 + x] % 20, blocks[y * 14 + x] / 20) * vBlockSize, vBlockSize);
 			}
 		}
+		
 		// Draw Player Spite
-		DrawSprite(fPlayerPos, sprPlayer.get());
+		DrawPartialSprite(fPlayerPos, sprTileMap.get(), olc::vi2d(0, 12) * vBlockSize, vBlockSize);
 		return true;
 	}
 };
