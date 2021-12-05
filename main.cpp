@@ -10,11 +10,14 @@ public:
 	}
 
 private:
+	olc::vf2d fPlayerPos = { 16.0f, 80.0f };
+	float fPlayerSpeed = 0.1f;
+
 	olc::vi2d vBlockSize = { 16, 16 };
 	std::unique_ptr<int[]> blocks;
 	
 	std::unique_ptr<olc::Sprite> sprTile;
-
+	std::unique_ptr<olc::Sprite> sprPlayer;
 public:
 	bool OnUserCreate() override
 	{
@@ -30,13 +33,22 @@ public:
 			}
 		}
 		
-		// Load the sprite
+		// Load the sprites
 		sprTile = std::make_unique<olc::Sprite>("./textures/tile_0011.png");
+		sprPlayer = std::make_unique<olc::Sprite>("./textures/tile_0240.png");
 		return true;
 	}
 	
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		// Handle User Input 
+		if (GetKey(olc::Key::LEFT).bHeld) fPlayerPos.x -= fPlayerSpeed;
+		if (GetKey(olc::Key::RIGHT).bHeld) fPlayerPos.x += fPlayerSpeed;
+		
+		if (fPlayerPos.x < 16.0f) fPlayerPos.x = 16.0f;
+		if (fPlayerPos.x + 16.0f > 208.0f) fPlayerPos.x = 192.0f; 
+		
+		// Draw Game Field
 		for (int y = 0; y < 7; y++)
 		{
 			for (int x = 0; x < 14; x++)
@@ -51,6 +63,8 @@ public:
 				}
 			}
 		}
+		// Draw Player Spite
+		DrawSprite(fPlayerPos, sprPlayer.get());
 		return true;
 	}
 };
