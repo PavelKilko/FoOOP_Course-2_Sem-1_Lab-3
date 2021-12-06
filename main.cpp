@@ -10,8 +10,10 @@ public:
 	}
 
 private:
+	olc::vi2d vMapSize = { 0, 0 };
+
 	olc::vf2d fPlayerPos = { 16.0f, 80.0f };
-	olc::vf2d fPlayerSpeed = { 25.0f, 0.0f };
+	olc::vf2d fPlayerSpeed = { 40.0f, 0.0f };
 
 	float fGravityAcceleration = 60.0f;
 
@@ -22,18 +24,6 @@ private:
 public:
 	bool OnUserCreate() override
 	{
-		blocks = std::make_unique<int[]>(14 * 7);
-		for (int y = 0; y < 7; y++)
-		{
-			for (int x = 0; x < 14; x++)
-			{
-				if (x == 0 || y == 0 || x == 13 || y == 6)
-					blocks[y * 14 + x] = 11;
-				else
-					blocks[y * 14 + x] = 0;
-			}
-		}
-		
 		// Load the sprites
 		sprTileMap = std::make_unique<olc::Sprite>("./textures/monochrome_tilemap_packed.png");
 		return true;
@@ -62,6 +52,8 @@ public:
 			fPlayerSpeed.y = 0.0f;
 		}
 		
+		
+		
 		// Draw Game Field
 		Clear(olc::BLACK);
 		for (int y = 0; y < 7; y++)
@@ -73,15 +65,35 @@ public:
 		}
 		
 		// Draw Player Spite
-		DrawPartialSprite(fPlayerPos, sprTileMap.get(), olc::vi2d(0, 12) * vBlockSize, vBlockSize);
+		DrawPartialSprite(fPlayerPos, sprTileMap.get(), olc::vi2d(0, 17) * vBlockSize, vBlockSize);
 		return true;
 	}
+	
+	void LoadTileMap()
+	{
+		// Setup Map Size
+		std::cin >> vMapSize.x >> vMapSize.y;
+		blocks = std::make_unique<int[]>(vMapSize.x * vMapSize.y);
+		// Setup Types of Blocks
+		for (int y = 0; y < vMapSize.y; y++)
+		{
+			for (int x = 0; x < vMapSize.x; x++)
+			{
+				std::cin >> blocks[y * vMapSize.x + x];
+			}
+		}
+	}
 };
+
+
 
 int main()
 {
 		Platformer demo;
 		if (demo.Construct(224, 112, 4, 4))
+		{
+			demo.LoadTileMap();
 			demo.Start();
+		}
 		return 0;
 }
