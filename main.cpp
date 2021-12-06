@@ -11,7 +11,7 @@ public:
 
 private:
 	// Player parametrs
-	olc::vf2d fPlayerStartPos = {0.0f, 0.0f};
+	olc::vf2d fPlayerStartPos = { 0.0f, 0.0f };
 	olc::vf2d fPlayerPos = { 16.0f, 80.0f };
 	olc::vf2d fPlayerSpeed = { 40.0f, 0.0f };
 	
@@ -32,6 +32,7 @@ private:
 	olc::vi2d vBlockSize = { 16, 16 };
 	std::unique_ptr<Block[]> blocks;
 	std::unique_ptr<olc::Sprite> sprTileMap;
+	std::unique_ptr<olc::Sprite> sprTileTranspMap;
 	
 	// Map physics
 	float fGravityAcceleration = 60.0f;
@@ -40,6 +41,7 @@ public:
 	{
 		// Load the sprites
 		sprTileMap = std::make_unique<olc::Sprite>("./textures/monochrome_tilemap_packed.png");
+		sprTileTranspMap = std::make_unique<olc::Sprite>("./textures/monochrome_tilemap_transparent_packed.png");
 		return true;
 	}
 	
@@ -110,8 +112,11 @@ public:
 			}
 		}
 		
+		
 		// Draw Player Spite
-		DrawPartialSprite(fPlayerPos, sprTileMap.get(), olc::vi2d(0, 17) * vBlockSize, vBlockSize);
+		SetPixelMode(olc::Pixel::MASK);
+		DrawPartialSprite(fPlayerPos, sprTileTranspMap.get(), olc::vi2d(0, 17) * vBlockSize, vBlockSize);
+		SetPixelMode(olc::Pixel::NORMAL);
 		
 		bRightMove = false;
 		bLeftMove = false;
