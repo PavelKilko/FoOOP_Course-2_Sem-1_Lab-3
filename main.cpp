@@ -220,6 +220,15 @@ public:
 			if (int(fPlayerPos.x) >= vBlockPos.x * 16 && int(fPlayerPos.x) <= (vBlockPos.x + 1) * 16 &&
 			    int(fPlayerPos.y + 15) >= vBlockPos.y * 16 && int(fPlayerPos.y + 15) <= (vBlockPos.y + 1) * 16)
 			{
+				if (bDownMove && bLeftMove)
+				{
+					fPlayerPos.y = float((vBlockPos.y - 1) * 16);
+					bDownMove = false;
+					bLeftMove = false;
+					bSpace = false;
+					fPlayerSpeed.y = 0.0f;
+					return true;
+				}
 				if (bDownMove)
 				{
 					fPlayerPos.y = float((vBlockPos.y - 1) * 16);
@@ -246,6 +255,15 @@ public:
 			if (int(fPlayerPos.x + 15) >= vBlockPos.x * 16 && int(fPlayerPos.x + 15) <= (vBlockPos.x + 1) * 16 &&
 			    int(fPlayerPos.y + 15) >= vBlockPos.y * 16 && int(fPlayerPos.y + 15) <= (vBlockPos.y + 1) * 16)
 			{
+				if (bDownMove && bRightMove)
+				{
+					fPlayerPos.y = float((vBlockPos.y - 1) * 16);
+					bDownMove = false;
+					bRightMove = false;
+					bSpace = false;
+					fPlayerSpeed.y = 0.0f;
+					return true;
+				}
 				if (bDownMove)
 				{
 					fPlayerPos.y = float((vBlockPos.y - 1) * 16);
