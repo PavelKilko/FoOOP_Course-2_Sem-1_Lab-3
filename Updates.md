@@ -1,6 +1,4 @@
-# 12/25/2021 - Version v.d.1 : 
-
-# demo-version of project "Platformer game"
+# 12/25/2021 - Version v.d.1 : demo-version of project "Platformer game"
 
 Works with manual level modeling.
 List of basic features:
