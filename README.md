@@ -1,4 +1,4 @@
-# 22/01/2022 - Version v.a.1.0 : alpha-version of project "Platformer game"
+# 22/01/2022 - Version v.a.1.0 : alpha-version of project "Platformer game" (CURRENT)
 
 #### List of changes in the current version:
 
