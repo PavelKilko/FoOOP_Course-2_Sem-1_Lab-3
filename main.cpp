@@ -414,10 +414,10 @@ private:
 		if(!iPlayerLowerLeftCornerCollision && !iPlayerLowerRightCornerCollision && !iPlayerUpperLeftCornerCollision && !iPlayerUpperRightCornerCollision)
 		return false;
 
-		std::cout << "{" << std::endl;
-		std::cout << iPlayerUpperLeftCornerCollision << iPlayerUpperRightCornerCollision << std::endl;
-		std::cout << iPlayerLowerLeftCornerCollision << iPlayerLowerRightCornerCollision << std::endl;
-		std::cout << "}" << std::endl;
+		// std::cout << "{" << std::endl;
+		// std::cout << iPlayerUpperLeftCornerCollision << iPlayerUpperRightCornerCollision << std::endl;
+		// std::cout << iPlayerLowerLeftCornerCollision << iPlayerLowerRightCornerCollision << std::endl;
+		// std::cout << "}" << std::endl;
 
 		return true;
 	}
